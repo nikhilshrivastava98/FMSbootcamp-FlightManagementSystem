@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.capgemini.flightmanagement.exceptions.RecordAlreadyPresentException;
 import com.capgemini.flightmanagement.exceptions.RecordNotFoundException;
 import com.capgemini.flightmanagement.entity.Airport;
-import com.capgemini.flightmanagement.entity.Flight;
+//entity.Flight
 import com.capgemini.flightmanagement.service.AirportService;
 import com.capgemini.flightmanagement.service.AirportServiceImpl;
 @CrossOrigin("http://localhost:4200")

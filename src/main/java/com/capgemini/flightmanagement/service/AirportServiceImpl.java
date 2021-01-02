@@ -1,7 +1,5 @@
 package com.capgemini.flightmanagement.service;
 
-import com.capgemini.flightmanagement.service.AirportService;
-import java.math.BigInteger;
 import java.util.Optional;
 
 import com.capgemini.flightmanagement.entity.Airport;
@@ -11,9 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-
 import com.capgemini.flightmanagement.dao.AirportDao;
 import com.capgemini.flightmanagement.exceptions.RecordAlreadyPresentException;
 import com.capgemini.flightmanagement.exceptions.RecordNotFoundException;
@@ -56,10 +51,10 @@ public class AirportServiceImpl implements AirportService {
 	 */
 	@Override
 	public ResponseEntity<?> addAirport(Airport airport) {
-		Optional<Airport> findById = AirportDao.findById(Airport.getAirportCode());
+		Optional<Airport> findById = airportDao.findById(airport.getAirportCode());
 		try {
 		if (!findById.isPresent()) {
-			AirportDao.save(airport);
+			airportDao.save(airport);
 			return new ResponseEntity<Airport>(airport,HttpStatus.OK);
 		} 
 		else
@@ -71,7 +66,6 @@ public class AirportServiceImpl implements AirportService {
 			return new ResponseEntity<Airport>(airport,HttpStatus.NOT_FOUND);
 		}
 	}
-
 	/*
 	 * modify an Airport
 	 */

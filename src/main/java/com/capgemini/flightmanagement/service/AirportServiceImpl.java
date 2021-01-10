@@ -1,5 +1,6 @@
 package com.capgemini.flightmanagement.service;
 
+import java.math.BigInteger;
 import java.util.Optional;
 
 import com.capgemini.flightmanagement.entity.Airport;
@@ -9,29 +10,30 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import com.capgemini.flightmanagement.dao.AirportDao;
+
 import com.capgemini.flightmanagement.exceptions.RecordAlreadyPresentException;
 import com.capgemini.flightmanagement.exceptions.RecordNotFoundException;
+import com.capgemini.flightmanagement.repository.AirportRepository;
 
 @Service
 public class AirportServiceImpl implements AirportService {
 	@Autowired
-	AirportDao airportDao;
+	AirportRepository airportRepository;
 
 	/*
 	 * view all Airport
 	 */
 	@Override
 	public Iterable<Airport> viewAllAirport() {
-		return airportDao.findAll();
+		return airportRepository.findAll();
 	}
 
 	/*
 	 * view airport by airportCode
 	 */
 	@Override
-	public Airport viewAirport(String airportCode) {
-		Optional<Airport> findById = airportDao.findById(airportCode);
+	public Airport viewAirport(BigInteger airportCode) {
+		Optional<Airport> findById = airportRepository.findById(airportCode);
 		if (findById.isPresent()) {
 			return findById.get();
 		}
@@ -51,10 +53,10 @@ public class AirportServiceImpl implements AirportService {
 	 */
 	@Override
 	public ResponseEntity<?> addAirport(Airport airport) {
-		Optional<Airport> findById = airportDao.findById(airport.getAirportCode());
+		Optional<Airport> findById = airportRepository.findById(airport.getAirportCode());
 		try {
 		if (!findById.isPresent()) {
-			airportDao.save(airport);
+			airportRepository.save(airport);
 			return new ResponseEntity<Airport>(airport,HttpStatus.OK);
 		} 
 		else
@@ -71,9 +73,9 @@ public class AirportServiceImpl implements AirportService {
 	 */
 	@Override
 	public Airport modifyAirport(Airport airport) {
-		Optional<Airport> findById = airportDao.findById(airport.getAirportCode());
+		Optional<Airport> findById = airportRepository.findById(airport.getAirportCode());
 		if (findById.isPresent()) {
-			airportDao.save(airport);
+			airportRepository.save(airport);
 		} 
 		else
 			throw new RecordNotFoundException("Airport with code: " + airport.getAirportCode() + " not exists");
@@ -84,10 +86,10 @@ public class AirportServiceImpl implements AirportService {
 	 * remove an airport
 	 */
 	@Override
-	public String removeAirport(String airportCode) {
-		Optional<Airport> findById = airportDao.findById(airportCode);
+	public String removeAirport(BigInteger airportCode) {
+		Optional<Airport> findById = airportRepository.findById(airportCode);
 		if (findById.isPresent()) {
-			airportDao.deleteById(airportCode);
+			airportRepository.deleteById(airportCode);
 			return "Airport removed";
 		} else
 			throw new RecordNotFoundException("Airport with code: " + airportCode + " not exists");

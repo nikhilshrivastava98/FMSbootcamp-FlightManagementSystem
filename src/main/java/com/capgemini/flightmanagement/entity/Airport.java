@@ -1,20 +1,36 @@
 package com.capgemini.flightmanagement.entity;
 
+import java.math.BigInteger;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 @Entity
+@Table(name="Airport")
 public class Airport
 /**
  * Class Airport
  */
 {
 	@Id
-	private String airportCode;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "airport_code", length = 30)
+	private BigInteger airportCode;
+	
+	@NotNull(message="location cannot be null")
+	@Column(name = "airport_location")
 	private String airportLocation;
+	
+	@NotNull(message="airportName cannot be null")
+	@Column(name = "airport_name")
 	private String airportName;
 
-	public Airport(String airportName, String airportLocation, String airportCode)
+	public Airport(String airportName, String airportLocation, BigInteger airportCode)
 	/**
 	 * parameterized Constructor
 	 */
@@ -47,11 +63,11 @@ public class Airport
 		this.airportLocation = airportLocation;
 	}
 
-	public String getAirportCode() {
+	public BigInteger getAirportCode() {
 		return airportCode;
 	}
 
-	public void setAirportCode(String airportCode) {
+	public void setAirportCode(BigInteger airportCode) {
 		this.airportCode = airportCode;
 	}
 
